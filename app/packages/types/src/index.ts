@@ -27,6 +27,6 @@ export {
   type Ulid,
 } from "./storage.js";
 
-export const DEFAULT_INFERENCE_MODEL = "qwen-2.5-72b" as const;
+export const DEFAULT_INFERENCE_MODEL = "qwen/qwen3-32b" as const;
 export const DEFAULT_HTTP_PORT = 3000 as const;
 export const DEFAULT_BIND_ADDRESS = "0.0.0.0" as const;
