@@ -1,0 +1,25 @@
+{
+  "name": "where-came-discuss",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Asad Architect — monorepo root. Workspace packages live under app/.",
+  "license": "UNLICENSED",
+  "packageManager": "npm@10.8.2",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "workspaces": [
+    "app",
+    "app/packages/*",
+    "app/apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build --filter=@asad-architect/types --filter=@asad-architect/ui --filter=@asad-architect/api --filter=@asad-architect/ai-chat",
+    "build:packages": "turbo run build --filter=./app/packages/*",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.5",
+    "typescript": "^5.8.3"
+  }
+}

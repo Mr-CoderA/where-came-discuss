@@ -1,0 +1,78 @@
+:root {
+  --space-unit: 6px;
+  --space-1: var(--space-unit);
+  --space-2: calc(var(--space-unit) * 2);
+  --space-3: calc(var(--space-unit) * 3);
+  --space-4: calc(var(--space-unit) * 4);
+  --space-5: calc(var(--space-unit) * 5);
+  --space-6: calc(var(--space-unit) * 6);
+  --space-8: calc(var(--space-unit) * 8);
+  --space-10: calc(var(--space-unit) * 10);
+  --space-12: calc(var(--space-unit) * 12);
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  --font-body: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --font-mono: "IBM Plex Mono", "ui-monospace", "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --type-caption: clamp(0.72rem, 0.65rem + 0.22vw, 0.8125rem);
+  --type-body: clamp(1rem, 0.94rem + 0.28vw, 1.125rem);
+  --type-lede: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+  --type-title: clamp(1.85rem, 1.2rem + 2.4vw, 3.15rem);
+  --leading-tight: 1.12;
+  --leading-body: 1.55;
+  --measure: 62ch;
+
+  --gray-00: #f7f6f3;
+  --gray-01: #eceae4;
+  --gray-02: #ddd9d0;
+  --gray-03: #c4bfb4;
+  --gray-04: #a39d91;
+  --gray-05: #837d72;
+  --gray-06: #655f56;
+  --gray-07: #4c4740;
+  --gray-08: #37332e;
+  --gray-09: #241f1c;
+  --gray-10: #161311;
+  --gray-11: #0c0a09;
+
+  --accent: #9a3412;
+  --accent-ink: #fff8f3;
+
+  --duration-focus: 160ms;
+  --duration-hover: 180ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --ring-width: 1.5px;
+  --hairline: 1px;
+
+  color-scheme: light;
+  --bg: var(--gray-00);
+  --fg: var(--gray-10);
+  --muted: var(--gray-06);
+  --line: var(--gray-03);
+  --surface: var(--gray-01);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: var(--gray-11);
+  --fg: var(--gray-01);
+  --muted: var(--gray-04);
+  --line: var(--gray-08);
+  --surface: var(--gray-10);
+  --accent: #e07848;
+  --accent-ink: var(--gray-11);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: var(--gray-11);
+    --fg: var(--gray-01);
+    --muted: var(--gray-04);
+    --line: var(--gray-08);
+    --surface: var(--gray-10);
+    --accent: #e07848;
+    --accent-ink: var(--gray-11);
+  }
+}

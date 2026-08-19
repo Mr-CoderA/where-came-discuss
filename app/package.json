@@ -1,0 +1,17 @@
+{
+  "name": "@asad-architect/workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "pnpm/npm workspace hub: shared types, UI primitives, API, and static chat client.",
+  "license": "UNLICENSED",
+  "packageManager": "npm@10.8.2",
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build --filter=./packages/* --filter=./apps/*",
+    "typecheck": "tsc -b tsconfig.json --pretty"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.5",
+    "typescript": "^5.8.3"
+  }
+}

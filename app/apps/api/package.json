@@ -1,0 +1,29 @@
+{
+  "name": "@asad-architect/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Asad Architect HTTP API (Node). This milestone compiles the workspace package; the listener lands in a later milestone.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b --pretty",
+    "typecheck": "tsc -b --pretty",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@asad-architect/types": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.3"
+  }
+}

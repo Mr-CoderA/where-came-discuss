@@ -1,0 +1,24 @@
+{
+  "name": "@asad-architect/types",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Compile-time domain model and HTTP contracts for Asad Architect.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b --pretty",
+    "typecheck": "tsc -b --pretty"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
