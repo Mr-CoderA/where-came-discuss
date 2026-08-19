@@ -7,8 +7,10 @@
   "packageManager": "npm@10.8.2",
   "type": "module",
   "scripts": {
-    "build": "turbo run build --filter=./packages/* --filter=./apps/*",
-    "typecheck": "tsc -b tsconfig.json --pretty"
+    "build": "turbo run build --filter=./packages/* --filter=./apps/* && node ./scripts/verify-production-deploy.mjs",
+    "typecheck": "tsc -b tsconfig.json --pretty",
+    "start": "npm run start -w @asad-architect/api",
+    "verify:deploy": "node ./scripts/verify-production-deploy.mjs"
   },
   "devDependencies": {
     "turbo": "^2.5.5",

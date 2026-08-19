@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc -b --pretty && vite build",
     "typecheck": "tsc -b --pretty",
-    "dev": "vite"
+    "dev": "vite",
+    "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
     "@asad-architect/types": "*",

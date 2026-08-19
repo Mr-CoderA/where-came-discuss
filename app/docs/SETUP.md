@@ -80,4 +80,16 @@ Conversation history is local only, namespaced `asad-architect-v1`. There is no 
 
 ## Credential-free verification
 
-Install, typecheck, and production **build** do not call GROQ, do not require `GROQ_API_KEY`, and do not need a live API origin. Live keys are supplied later through the host environment.
+Install and Turbo compilation do not call GROQ, do not require `GROQ_API_KEY`, and do not need a live API origin. Live keys are supplied later through the host environment.
+
+The git-root contract `npm install && npm run build` finishes with `node app/scripts/verify-production-deploy.mjs`. That launch smoke:
+
+1. Confirms `apps/api/dist/server.js` is an HTTP listener (not a directory server) and that the SPA `dist/` exists.
+2. Compiles the frontend into a temporary directory with `VITE_API_ORIGIN` set to a non-secret test origin and asserts the origin is present in the static output.
+3. Starts the API with `node dist/server.js`, `PORT` on an ephemeral port, `CORS_ORIGIN` set to an exact test origin, and a **placeholder** `GROQ_API_KEY` used only to satisfy boot-time non-empty validation (the key is never sent; `/health` and `/ready` do not call GROQ).
+4. Probes `GET /health` and `GET /ready` over HTTP, re-probes after a keep-alive pause, and checks the process still reports bind `0.0.0.0`.
+5. Sends credentialed `OPTIONS` preflight to `POST /api/chat` for the allowed origin (`204`, exact `Access-Control-Allow-Origin`, `Access-Control-Allow-Credentials: true`) and a disallowed origin (`403`, no wildcard).
+
+Re-run the smoke alone after a build with `npm run verify:deploy` from the git root (or from `app/`).
+
+Do not point `CORS_ORIGIN` or `VITE_API_ORIGIN` at invented localhost URLs in committed examples. Operators inject real origins at deploy time.
