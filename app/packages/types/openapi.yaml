@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: Asad Architect API
   version: 0.1.0
-  description: Compile-time contract. Handlers are implemented in a later milestone.
+  description: Compile-time contract shared by the Node API and the static client.
 paths:
   /health:
     get:

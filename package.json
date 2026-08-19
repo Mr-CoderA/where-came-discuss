@@ -16,7 +16,8 @@
   "scripts": {
     "build": "turbo run build --filter=@asad-architect/types --filter=@asad-architect/ui --filter=@asad-architect/api --filter=@asad-architect/ai-chat",
     "build:packages": "turbo run build --filter=./app/packages/*",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "start": "npm run start -w @asad-architect/api"
   },
   "devDependencies": {
     "turbo": "^2.5.5",

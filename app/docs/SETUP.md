@@ -18,11 +18,11 @@ Build order is enforced by package `dependsOn` (`^build`): `packages/types` → 
 
 ## Packages
 
-| Package | Role | Build | Production start (later milestone) |
+| Package | Role | Build | Production start |
 | --- | --- | --- | --- |
 | `@asad-architect/types` | Shared domain + HTTP contract types | `npm run build -w @asad-architect/types` | n/a (library) |
 | `@asad-architect/ui` | Tokens, primitives, CSS cascade | `npm run build -w @asad-architect/ui` | n/a (library) |
-| `@asad-architect/api` | HTTP API (Node) | `npm run build -w @asad-architect/api` | `node dist/server.js` |
+| `@asad-architect/api` | HTTP API (Node) | `npm run build -w @asad-architect/api` | `node dist/server.js` (from `app/apps/api`, or `npm start` at the repo root) |
 | `@asad-architect/ai-chat` | Static frontend (Vite) | `npm run build -w @asad-architect/ai-chat` | static file hosting |
 
 TypeScript **project references** are declared in `app/tsconfig.json`. Each package uses `composite` emit so `tsc -b` in `app/` type-checks the graph in dependency order.
@@ -38,7 +38,7 @@ Copy `app/.env.example` to a private `.env` (or set variables on the host). **Do
 | `PORT` | No (platform usually sets it) | HTTP listen port. Bind `0.0.0.0`. |
 | `CORS_ORIGIN` | Yes in production with a browser client | Comma-separated **exact** origins. Credentials enabled; never `*`. |
 | `ALLOWED_ORIGINS` | No | Alias for `CORS_ORIGIN` if the primary name is unset. |
-| `GROQ_API_KEY` | Yes for inference | GROQ API credential. Validated as a non-empty string at process boot (implementation in a later milestone). |
+| `GROQ_API_KEY` | Yes at process boot | GROQ inference credential. The process fails fast if this is missing or blank. Health and readiness probes do not call GROQ. |
 | `REPOFIXER_SELF_URL` / `PUBLIC_URL` | When the API must mint absolute URLs | Platform public origin. Path-specific URLs are composed in code; do not ask operators for callback URLs hosted on this service. |
 
 ### Frontend (`apps/ai-chat`)
@@ -47,9 +47,28 @@ Copy `app/.env.example` to a private `.env` (or set variables on the host). **Do
 | --- | --- | --- |
 | `VITE_API_ORIGIN` | Yes for a production static build | Public API origin, read **only at Vite build time** via `import.meta.env.VITE_API_ORIGIN`. No runtime `process.env`, no localhost, and no same-origin fallbacks. |
 
-## CORS contract (implemented with the API server)
+## API process
 
-The API must treat `CORS_ORIGIN` as an exact-origin allowlist, answer `OPTIONS` globally for credentialed POST + `Content-Type`, echo the allowed requesting origin, set `Access-Control-Allow-Credentials: true`, and refuse wildcard + credentials.
+After `npm run build`, start the API with a production entrypoint that **creates and listens on HTTP** (not a static file server):
+
+```bash
+npm start
+# equivalent: npm run start -w @asad-architect/api
+# equivalent: node dist/server.js   # cwd: app/apps/api
+```
+
+The listener binds `0.0.0.0:${PORT:-3000}` and stays alive with the HTTP server plus a 10s heartbeat (also used to expire in-memory stream jobs).
+
+| Probe | Path | Behavior |
+| --- | --- | --- |
+| Liveness | `GET /health` | `{"status":"ok","timestamp":"<iso>"}` — no GROQ or datastore calls |
+| Readiness | `GET /ready` | `{"status":"ready","checks":["middleware","routes","cors"]}` |
+
+Path-specific public URLs are composed in code from `REPOFIXER_SELF_URL` or `PUBLIC_URL` plus a route constant. Do not configure callback URLs that point at this service.
+
+## CORS contract
+
+The API treats `CORS_ORIGIN` (or `ALLOWED_ORIGINS` if the primary name is unset) as a comma-separated **exact-origin** allowlist. Global `OPTIONS` handling covers credentialed `POST` plus `Content-Type` / `Authorization`. An allowed request origin is echoed in `Access-Control-Allow-Origin`, `Access-Control-Allow-Credentials` is `true`, and `*` is never used with credentials. Document `CORS_ORIGIN` with an empty value in `app/.env.example` and `app/apps/api/.env.example`.
 
 ## Storage (browser)
 
