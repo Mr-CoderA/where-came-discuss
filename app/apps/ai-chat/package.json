@@ -2,7 +2,7 @@
   "name": "@asad-architect/ai-chat",
   "version": "0.1.0",
   "private": true,
-  "description": "Static Asad Architect client. Chat surfaces are a later milestone; this package compiles the Vite workspace and design host.",
+  "description": "Static Asad Architect client: local history, composition editor, and GROQ-backed streaming via the API origin.",
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
@@ -14,7 +14,8 @@
     "@asad-architect/types": "*",
     "@asad-architect/ui": "*",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",

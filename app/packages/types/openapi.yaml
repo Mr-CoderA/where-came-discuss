@@ -18,7 +18,7 @@ paths:
     post:
       responses:
         "200":
-          description: Accepted job; client should open SSE.
+          description: Accepted job `{ id, status, token }`; client opens SSE with that accessor.
   /api/stream:
     get:
       responses:

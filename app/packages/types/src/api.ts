@@ -22,8 +22,11 @@ export interface ChatCompletionRequest {
 export type ChatJobStatus = "processing";
 
 export interface ChatCompletionAccepted {
+  /** Conversation / job id used as `conversationId` on the SSE route. */
   readonly id: string;
   readonly status: ChatJobStatus;
+  /** One-time stream accessor; pass as `token` on `GET /api/stream`. */
+  readonly token: string;
 }
 
 export interface StreamQuery {

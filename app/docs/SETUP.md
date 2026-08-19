@@ -23,7 +23,7 @@ Build order is enforced by package `dependsOn` (`^build`): `packages/types` → 
 | `@asad-architect/types` | Shared domain + HTTP contract types | `npm run build -w @asad-architect/types` | n/a (library) |
 | `@asad-architect/ui` | Tokens, primitives, CSS cascade | `npm run build -w @asad-architect/ui` | n/a (library) |
 | `@asad-architect/api` | HTTP API (Node) | `npm run build -w @asad-architect/api` | `node dist/server.js` (from `app/apps/api`, or `npm start` at the repo root) |
-| `@asad-architect/ai-chat` | Static frontend (Vite) | `npm run build -w @asad-architect/ai-chat` | static file hosting |
+| `@asad-architect/ai-chat` | Static frontend (Vite SPA) | `npm run build -w @asad-architect/ai-chat` | static file hosting (CDN / nginx). Not started by the API process. |
 
 TypeScript **project references** are declared in `app/tsconfig.json`. Each package uses `composite` emit so `tsc -b` in `app/` type-checks the graph in dependency order.
 
@@ -45,7 +45,11 @@ Copy `app/.env.example` to a private `.env` (or set variables on the host). **Do
 
 | Name | Required | Purpose |
 | --- | --- | --- |
-| `VITE_API_ORIGIN` | Yes for a production static build | Public API origin, read **only at Vite build time** via `import.meta.env.VITE_API_ORIGIN`. No runtime `process.env`, no localhost, and no same-origin fallbacks. |
+| `VITE_API_ORIGIN` | Yes for a production static build | Public API origin, read **only at Vite build time** via `import.meta.env.VITE_API_ORIGIN`. No runtime `process.env`, no localhost, and no same-origin fallbacks. Documented without a value in `app/.env.example` and `app/apps/ai-chat/.env.example`. |
+
+Static routes (React Router, history API): `/` drawing log, `/chat/:id` active sheet. Hosts must serve `index.html` for unknown paths.
+
+The client stores conversations under `asad-architect-v1` in `localStorage` and enforces a sliding window (24 POSTs / 60s) before calling `POST /api/chat`. After accept (`{ id, status, token }`) it opens `GET /api/stream` and parses native SSE `data:` frames. Credentialed `fetch` is used; CORS must list the exact frontend origin.
 
 ## API process
 

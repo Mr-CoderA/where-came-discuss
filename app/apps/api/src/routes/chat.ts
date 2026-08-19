@@ -27,6 +27,7 @@ export async function handleChatPost(
     const body: ChatCompletionAccepted = {
       id: job.id,
       status: "processing",
+      token: job.accessor,
     };
     sendJson(res, 200, body);
   } catch (error) {

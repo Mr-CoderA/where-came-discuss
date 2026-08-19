@@ -14,6 +14,8 @@ export function HairlineRule({ label, className }: HairlineRuleProps): ReactNode
     return <hr className={cls} />;
   }
   return (
-    <div className={cls} role="separator" aria-label={label} />
+    <div className={`${cls} aa-rule--labeled`} role="separator">
+      <span className="aa-rule__label">{label}</span>
+    </div>
   );
 }
