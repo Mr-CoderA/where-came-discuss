@@ -64,5 +64,9 @@ export function isStreamTokenEvent(value: unknown): value is StreamTokenEvent {
     return false;
   }
   const record = value as Record<string, unknown>;
-  return typeof record.token === "string" && typeof record.done === "boolean";
+  return (
+    typeof record.token === "string" &&
+    typeof record.done === "boolean" &&
+    (record.error === undefined || typeof record.error === "string")
+  );
 }

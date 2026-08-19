@@ -108,6 +108,9 @@ export async function consumeTokenStream(
     if (!isStreamTokenEvent(event)) {
       continue;
     }
+    if (event.error !== undefined) {
+      throw new Error(event.error);
+    }
     if (event.token.length > 0) {
       onToken(event.token);
     }

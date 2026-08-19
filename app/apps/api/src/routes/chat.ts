@@ -89,8 +89,12 @@ export async function handleStreamGet(
         break;
       }
     }
-  } catch {
-    writeEvent({ token: "", done: true });
+  } catch (error) {
+    if (!abort.signal.aborted) {
+      const detail = error instanceof Error ? error.message : "GROQ stream failed";
+      process.stderr.write(`[stream] job ${job.id} failed: ${detail}\n`);
+      writeEvent({ token: "", done: true, error: detail });
+    }
   } finally {
     if (!res.writableEnded) {
       res.end();

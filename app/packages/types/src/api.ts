@@ -37,6 +37,8 @@ export interface StreamQuery {
 export interface StreamTokenEvent {
   readonly token: string;
   readonly done: boolean;
+  /** Present only when the stream ended because inference failed. */
+  readonly error?: string;
 }
 
 /** RFC 7807 Problem Details. */
